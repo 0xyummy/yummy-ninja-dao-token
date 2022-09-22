@@ -3,12 +3,11 @@
 
 pragma solidity ^0.8.0;
 
-import "./draft-IERC20PermitUpgradeable.sol";
-import "../ERC20Upgradeable.sol";
-import "../../../utils/cryptography/draft-EIP712Upgradeable.sol";
-import "../../../utils/cryptography/ECDSAUpgradeable.sol";
-import "../../../utils/CountersUpgradeable.sol";
-import "../../../proxy/utils/Initializable.sol";
+import "./draft-IERC20Permit.sol";
+import "../ERC20.sol";
+import "../../../utils/cryptography/draft-EIP712.sol";
+import "../../../utils/cryptography/ECDSA.sol";
+import "../../../utils/Counters.sol";
 
 /**
  * @dev Implementation of the ERC20 Permit extension allowing approvals to be made via signatures, as defined in
@@ -19,13 +18,11 @@ import "../../../proxy/utils/Initializable.sol";
  * need to send a transaction, and thus is not required to hold Ether at all.
  *
  * _Available since v3.4._
- *
- * @custom:storage-size 51
  */
-abstract contract ERC20PermitUpgradeable is Initializable, ERC20Upgradeable, IERC20PermitUpgradeable, EIP712Upgradeable {
-    using CountersUpgradeable for CountersUpgradeable.Counter;
+abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712 {
+    using Counters for Counters.Counter;
 
-    mapping(address => CountersUpgradeable.Counter) private _nonces;
+    mapping(address => Counters.Counter) private _nonces;
 
     // solhint-disable-next-line var-name-mixedcase
     bytes32 private constant _PERMIT_TYPEHASH =
@@ -44,11 +41,7 @@ abstract contract ERC20PermitUpgradeable is Initializable, ERC20Upgradeable, IER
      *
      * It's a good idea to use the same `name` that is defined as the ERC20 token name.
      */
-    function __ERC20Permit_init(string memory name) internal onlyInitializing {
-        __EIP712_init_unchained(name, "1");
-    }
-
-    function __ERC20Permit_init_unchained(string memory) internal onlyInitializing {}
+    constructor(string memory name) EIP712(name, "1") {}
 
     /**
      * @dev See {IERC20Permit-permit}.
@@ -68,7 +61,7 @@ abstract contract ERC20PermitUpgradeable is Initializable, ERC20Upgradeable, IER
 
         bytes32 hash = _hashTypedDataV4(structHash);
 
-        address signer = ECDSAUpgradeable.recover(hash, v, r, s);
+        address signer = ECDSA.recover(hash, v, r, s);
         require(signer == owner, "ERC20Permit: invalid signature");
 
         _approve(owner, spender, value);
@@ -95,15 +88,8 @@ abstract contract ERC20PermitUpgradeable is Initializable, ERC20Upgradeable, IER
      * _Available since v4.1._
      */
     function _useNonce(address owner) internal virtual returns (uint256 current) {
-        CountersUpgradeable.Counter storage nonce = _nonces[owner];
+        Counters.Counter storage nonce = _nonces[owner];
         current = nonce.current();
         nonce.increment();
     }
-
-    /**
-     * @dev This empty reserved space is put in place to allow future versions to add new
-     * variables without shifting down storage in the inheritance chain.
-     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-     */
-    uint256[49] private __gap;
 }

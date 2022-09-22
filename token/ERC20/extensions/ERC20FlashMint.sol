@@ -3,10 +3,9 @@
 
 pragma solidity ^0.8.0;
 
-import "../../../interfaces/IERC3156FlashBorrowerUpgradeable.sol";
-import "../../../interfaces/IERC3156FlashLenderUpgradeable.sol";
-import "../ERC20Upgradeable.sol";
-import "../../../proxy/utils/Initializable.sol";
+import "../../../interfaces/IERC3156FlashBorrower.sol";
+import "../../../interfaces/IERC3156FlashLender.sol";
+import "../ERC20.sol";
 
 /**
  * @dev Implementation of the ERC3156 Flash loans extension, as defined in
@@ -17,12 +16,7 @@ import "../../../proxy/utils/Initializable.sol";
  *
  * _Available since v4.1._
  */
-abstract contract ERC20FlashMintUpgradeable is Initializable, ERC20Upgradeable, IERC3156FlashLenderUpgradeable {
-    function __ERC20FlashMint_init() internal onlyInitializing {
-    }
-
-    function __ERC20FlashMint_init_unchained() internal onlyInitializing {
-    }
+abstract contract ERC20FlashMint is ERC20, IERC3156FlashLender {
     bytes32 private constant _RETURN_VALUE = keccak256("ERC3156FlashBorrower.onFlashLoan");
 
     /**
@@ -31,7 +25,7 @@ abstract contract ERC20FlashMintUpgradeable is Initializable, ERC20Upgradeable, 
      * @return The amount of token that can be loaned.
      */
     function maxFlashLoan(address token) public view virtual override returns (uint256) {
-        return token == address(this) ? type(uint256).max - ERC20Upgradeable.totalSupply() : 0;
+        return token == address(this) ? type(uint256).max - ERC20.totalSupply() : 0;
     }
 
     /**
@@ -77,7 +71,7 @@ abstract contract ERC20FlashMintUpgradeable is Initializable, ERC20Upgradeable, 
     // minted at the beginning is always recovered and burned at the end, or else the entire function will revert.
     // slither-disable-next-line reentrancy-no-eth
     function flashLoan(
-        IERC3156FlashBorrowerUpgradeable receiver,
+        IERC3156FlashBorrower receiver,
         address token,
         uint256 amount,
         bytes calldata data
@@ -99,11 +93,4 @@ abstract contract ERC20FlashMintUpgradeable is Initializable, ERC20Upgradeable, 
         }
         return true;
     }
-
-    /**
-     * @dev This empty reserved space is put in place to allow future versions to add new
-     * variables without shifting down storage in the inheritance chain.
-     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-     */
-    uint256[50] private __gap;
 }

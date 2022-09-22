@@ -3,12 +3,12 @@
 
 pragma solidity ^0.8.0;
 
-import "./math/MathUpgradeable.sol";
+import "./math/Math.sol";
 
 /**
  * @dev Collection of functions related to array types.
  */
-library ArraysUpgradeable {
+library Arrays {
     /**
      * @dev Searches a sorted `array` and returns the first index that contains
      * a value greater or equal to `element`. If no such index exists (i.e. all
@@ -27,7 +27,7 @@ library ArraysUpgradeable {
         uint256 high = array.length;
 
         while (low < high) {
-            uint256 mid = MathUpgradeable.average(low, high);
+            uint256 mid = Math.average(low, high);
 
             // Note that mid will always be strictly less than high (i.e. it will be a valid array index)
             // because Math.average rounds down (it does integer division with truncation).

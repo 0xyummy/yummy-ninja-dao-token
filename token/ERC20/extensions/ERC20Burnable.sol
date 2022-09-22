@@ -3,21 +3,15 @@
 
 pragma solidity ^0.8.0;
 
-import "../ERC20Upgradeable.sol";
-import "../../../utils/ContextUpgradeable.sol";
-import "../../../proxy/utils/Initializable.sol";
+import "../ERC20.sol";
+import "../../../utils/Context.sol";
 
 /**
  * @dev Extension of {ERC20} that allows token holders to destroy both their own
  * tokens and those that they have an allowance for, in a way that can be
  * recognized off-chain (via event analysis).
  */
-abstract contract ERC20BurnableUpgradeable is Initializable, ContextUpgradeable, ERC20Upgradeable {
-    function __ERC20Burnable_init() internal onlyInitializing {
-    }
-
-    function __ERC20Burnable_init_unchained() internal onlyInitializing {
-    }
+abstract contract ERC20Burnable is Context, ERC20 {
     /**
      * @dev Destroys `amount` tokens from the caller.
      *
@@ -42,11 +36,4 @@ abstract contract ERC20BurnableUpgradeable is Initializable, ContextUpgradeable,
         _spendAllowance(account, _msgSender(), amount);
         _burn(account, amount);
     }
-
-    /**
-     * @dev This empty reserved space is put in place to allow future versions to add new
-     * variables without shifting down storage in the inheritance chain.
-     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-     */
-    uint256[50] private __gap;
 }

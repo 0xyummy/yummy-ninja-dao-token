@@ -11,7 +11,7 @@ pragma solidity ^0.8.0;
  *
  * Include with `using Counters for Counters.Counter;`
  */
-library CountersUpgradeable {
+library Counters {
     struct Counter {
         // This variable should never be directly accessed by users of the library: interactions must be restricted to
         // the library's function. As of Solidity v0.5.2, this cannot be enforced, though there is a proposal to add

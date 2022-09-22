@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "./token/ERC20/ERC20Upgradeable.sol";
-
-import "./token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
-import "./token/ERC20/extensions/ERC20SnapshotUpgradeable.sol";
-import "./token/ERC20/extensions/ERC20CappedUpgradeable.sol";
-import "./token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
-import "./token/ERC20/extensions/ERC20VotesUpgradeable.sol";
-// import "./token/ERC20/extensions/ERC20FlashMintUpgradeable.sol";
-
-import "./access/AccessControlUpgradeable.sol";
-import "./security/PausableUpgradeable.sol";
-import "./proxy/utils/Initializable.sol";
+import "./token/ERC20/ERC20.sol";
+import "./token/ERC20/extensions/ERC20Burnable.sol";
+import "./token/ERC20/extensions/ERC20Snapshot.sol";
+import "./access/AccessControl.sol";
+import "./security/Pausable.sol";
+import "./token/ERC20/extensions/draft-ERC20Permit.sol";
+import "./token/ERC20/extensions/ERC20Votes.sol";
+import "./token/ERC20/extensions/ERC20FlashMint.sol";
 
 // Yummy Ninja DAO Token ($YNDT) Source Code
 
@@ -46,26 +42,16 @@ import "./proxy/utils/Initializable.sol";
  * @author Chuci Qin
  * @author Email qin@yummy.ninja
  */
-
-contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20SnapshotUpgradeable, AccessControlUpgradeable, PausableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable {
+ 
+ contract YummyNinjaDAOToken is ERC20, ERC20Burnable, ERC20Snapshot, AccessControl, Pausable, ERC20Permit, ERC20Votes, ERC20FlashMint {
     bytes32 public constant SNAPSHOT_ROLE = keccak256("SNAPSHOT_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor() {
-        _disableInitializers();
-    }
-
-    function initialize() initializer public {
-        __ERC20_init("Yummy Ninja DAO Token", "YNDT");
-        __ERC20Burnable_init();
-        __ERC20Snapshot_init();
-        __AccessControl_init();
-        __Pausable_init();
-        __ERC20Permit_init("Yummy Ninja DAO Token");
-        __ERC20Votes_init();
-        // __ERC20FlashMint_init();
-
+    constructor()
+        ERC20("Yummy Ninja DAO Token", "YNDT")
+        ERC20Permit("Yummy Ninja DAO Token")
+    {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(SNAPSHOT_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
@@ -94,7 +80,7 @@ contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpg
     function _beforeTokenTransfer(address from, address to, uint256 amount)
         internal
         whenNotPaused
-        override(ERC20Upgradeable, ERC20SnapshotUpgradeable)
+        override(ERC20, ERC20Snapshot)
     {
         super._beforeTokenTransfer(from, to, amount);
     }
@@ -103,21 +89,21 @@ contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpg
 
     function _afterTokenTransfer(address from, address to, uint256 amount)
         internal
-        override(ERC20Upgradeable, ERC20VotesUpgradeable)
+        override(ERC20, ERC20Votes)
     {
         super._afterTokenTransfer(from, to, amount);
     }
 
     function _mint(address to, uint256 amount)
         internal
-        override(ERC20Upgradeable, ERC20VotesUpgradeable)
+        override(ERC20, ERC20Votes)
     {
         super._mint(to, amount);
     }
 
     function _burn(address account, uint256 amount)
         internal
-        override(ERC20Upgradeable, ERC20VotesUpgradeable)
+        override(ERC20, ERC20Votes)
     {
         super._burn(account, amount);
     }

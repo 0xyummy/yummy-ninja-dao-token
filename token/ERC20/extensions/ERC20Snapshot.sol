@@ -3,10 +3,9 @@
 
 pragma solidity ^0.8.0;
 
-import "../ERC20Upgradeable.sol";
-import "../../../utils/ArraysUpgradeable.sol";
-import "../../../utils/CountersUpgradeable.sol";
-import "../../../proxy/utils/Initializable.sol";
+import "../ERC20.sol";
+import "../../../utils/Arrays.sol";
+import "../../../utils/Counters.sol";
 
 /**
  * @dev This contract extends an ERC20 token with a snapshot mechanism. When a snapshot is created, the balances and
@@ -40,17 +39,12 @@ import "../../../proxy/utils/Initializable.sol";
  * transfers will have normal cost until the next snapshot, and so on.
  */
 
-abstract contract ERC20SnapshotUpgradeable is Initializable, ERC20Upgradeable {
-    function __ERC20Snapshot_init() internal onlyInitializing {
-    }
-
-    function __ERC20Snapshot_init_unchained() internal onlyInitializing {
-    }
+abstract contract ERC20Snapshot is ERC20 {
     // Inspired by Jordi Baylina's MiniMeToken to record historical balances:
     // https://github.com/Giveth/minime/blob/ea04d950eea153a04c51fa510b068b9dded390cb/contracts/MiniMeToken.sol
 
-    using ArraysUpgradeable for uint256[];
-    using CountersUpgradeable for CountersUpgradeable.Counter;
+    using Arrays for uint256[];
+    using Counters for Counters.Counter;
 
     // Snapshotted values have arrays of ids and the value corresponding to that id. These could be an array of a
     // Snapshot struct, but that would impede usage of functions that work on an array.
@@ -63,7 +57,7 @@ abstract contract ERC20SnapshotUpgradeable is Initializable, ERC20Upgradeable {
     Snapshots private _totalSupplySnapshots;
 
     // Snapshot ids increase monotonically, with the first value being 1. An id of 0 is invalid.
-    CountersUpgradeable.Counter private _currentSnapshotId;
+    Counters.Counter private _currentSnapshotId;
 
     /**
      * @dev Emitted by {_snapshot} when a snapshot identified by `id` is created.
@@ -198,11 +192,4 @@ abstract contract ERC20SnapshotUpgradeable is Initializable, ERC20Upgradeable {
             return ids[ids.length - 1];
         }
     }
-
-    /**
-     * @dev This empty reserved space is put in place to allow future versions to add new
-     * variables without shifting down storage in the inheritance chain.
-     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-     */
-    uint256[46] private __gap;
 }

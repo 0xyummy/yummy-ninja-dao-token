@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./IERC3156FlashBorrowerUpgradeable.sol";
+import "./IERC3156FlashBorrower.sol";
 
 /**
  * @dev Interface of the ERC3156 FlashLender, as defined in
@@ -11,7 +11,7 @@ import "./IERC3156FlashBorrowerUpgradeable.sol";
  *
  * _Available since v4.1._
  */
-interface IERC3156FlashLenderUpgradeable {
+interface IERC3156FlashLender {
     /**
      * @dev The amount of currency available to be lended.
      * @param token The loan currency.
@@ -35,7 +35,7 @@ interface IERC3156FlashLenderUpgradeable {
      * @param data Arbitrary data structure, intended to contain user-defined parameters.
      */
     function flashLoan(
-        IERC3156FlashBorrowerUpgradeable receiver,
+        IERC3156FlashBorrower receiver,
         address token,
         uint256 amount,
         bytes calldata data

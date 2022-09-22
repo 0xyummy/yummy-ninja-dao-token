@@ -3,8 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "../utils/ContextUpgradeable.sol";
-import "../proxy/utils/Initializable.sol";
+import "../utils/Context.sol";
 
 /**
  * @dev Contract module which allows children to implement an emergency stop
@@ -15,7 +14,7 @@ import "../proxy/utils/Initializable.sol";
  * the functions of your contract. Note that they will not be pausable by
  * simply including this module, only once the modifiers are put in place.
  */
-abstract contract PausableUpgradeable is Initializable, ContextUpgradeable {
+abstract contract Pausable is Context {
     /**
      * @dev Emitted when the pause is triggered by `account`.
      */
@@ -31,11 +30,7 @@ abstract contract PausableUpgradeable is Initializable, ContextUpgradeable {
     /**
      * @dev Initializes the contract in unpaused state.
      */
-    function __Pausable_init() internal onlyInitializing {
-        __Pausable_init_unchained();
-    }
-
-    function __Pausable_init_unchained() internal onlyInitializing {
+    constructor() {
         _paused = false;
     }
 
@@ -107,11 +102,4 @@ abstract contract PausableUpgradeable is Initializable, ContextUpgradeable {
         _paused = false;
         emit Unpaused(_msgSender());
     }
-
-    /**
-     * @dev This empty reserved space is put in place to allow future versions to add new
-     * variables without shifting down storage in the inheritance chain.
-     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-     */
-    uint256[49] private __gap;
 }

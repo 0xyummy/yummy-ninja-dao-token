@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 /**
  * @dev String operations.
  */
-library StringsUpgradeable {
+library Strings {
     bytes16 private constant _HEX_SYMBOLS = "0123456789abcdef";
     uint8 private constant _ADDRESS_LENGTH = 20;
 
