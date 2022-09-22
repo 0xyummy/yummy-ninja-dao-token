@@ -15,8 +15,38 @@ import "./security/PausableUpgradeable.sol";
 import "./proxy/utils/Initializable.sol";
 
 // Yummy Ninja DAO Token ($YNDT) Source Code
-// @Auther Chuci Qin 
-// @Email qin@yummy.ninja
+
+/**
+ * @title Yummy Ninja DAO Token ($YNDT) ERC20 token
+ *
+ * @notice Yummy Ninja DAO Token ($YNDT) is a core ERC20 token powering the Yummy Ninja DAO.
+ *      It serves as an YummyNinja DAO Token, is tradable on exchanges,
+ *      it powers up the governance protocol (Yummy Ninja DAO) and participates in Yield Farming.
+ *
+ * @dev Token Summary:
+ *      - Symbol: YNDT
+ *      - Name: Yummy Ninja DAO Token
+ *      - Decimals: 18
+ *      - Initial token supply: 7,000,000 YNDT
+ *      - Maximum final token supply: 21,000,000 YNDT
+ *          - Up to 14,000,000 YNDT may get minted in years period via yield farming / POS
+ *      - Mintable: total supply may increase
+ *      - Burnable: total supply may decrease
+ *
+ * @dev - When mint and burn?
+ *          - Whenever an Yummy Ninja DAO NFT-F (Manager) is minted, decrease the total supply of $YNDT by one
+ *          - Whenever an Yummy Ninja DAO NFT-F (Manager) is burned, increase the total supply of $YNDT by one
+ *
+ * @dev - What is NFT-F
+ *          - NFT-F, Non-Fungible Token - Franchise, is a new application model of NFT. 
+ *          - To put it simply, NFT-F is ERC721's NFT bound to a real economic entity.
+ *          - When the physical economy corresponding to NFT-F generates real income, the corresponding funds will be transferred to the NFT-F holder's wallet address of NFT-F in real-time in the form of crypto stable coin.
+ *          - This is also the first NFT application that completely breaks the barrier between online and offline, with the support of the real economy. This will be a new application across the ages.
+ *
+ * @author Chuci Qin
+ * @author Email qin@yummy.ninja
+ */
+
 contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20SnapshotUpgradeable, AccessControlUpgradeable, PausableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable, ERC20FlashMintUpgradeable {
     bytes32 public constant SNAPSHOT_ROLE = keccak256("SNAPSHOT_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
