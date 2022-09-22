@@ -8,7 +8,7 @@ import "./token/ERC20/extensions/ERC20SnapshotUpgradeable.sol";
 import "./token/ERC20/extensions/ERC20CappedUpgradeable.sol";
 import "./token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "./token/ERC20/extensions/ERC20VotesUpgradeable.sol";
-import "./token/ERC20/extensions/ERC20FlashMintUpgradeable.sol";
+// import "./token/ERC20/extensions/ERC20FlashMintUpgradeable.sol";
 
 import "./access/AccessControlUpgradeable.sol";
 import "./security/PausableUpgradeable.sol";
@@ -47,12 +47,11 @@ import "./proxy/utils/Initializable.sol";
  * @author Email qin@yummy.ninja
  */
 
-contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20SnapshotUpgradeable, AccessControlUpgradeable, PausableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable, ERC20FlashMintUpgradeable {
+contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20SnapshotUpgradeable, AccessControlUpgradeable, PausableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable {
     bytes32 public constant SNAPSHOT_ROLE = keccak256("SNAPSHOT_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
@@ -65,14 +64,14 @@ contract YummyNinjaDAOToken is Initializable, ERC20Upgradeable, ERC20BurnableUpg
         __Pausable_init();
         __ERC20Permit_init("Yummy Ninja DAO Token");
         __ERC20Votes_init();
-        __ERC20FlashMint_init();
+        // __ERC20FlashMint_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(SNAPSHOT_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         // 7 000 000 00000 00000 0000 0000
         //21M Maximum (ERC20Capped)
-        _mint(msg.sender, 7000000000000000000000000);
+        _mint(msg.sender, 7000000 * 10 ** decimals());
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
