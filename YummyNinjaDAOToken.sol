@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "./token/ERC20/ERC20.sol";
-import "./token/ERC20/extensions/ERC20Burnable.sol";
-import "./token/ERC20/extensions/ERC20Snapshot.sol";
-import "./access/AccessControl.sol";
-import "./security/Pausable.sol";
-import "./token/ERC20/extensions/draft-ERC20Permit.sol";
-import "./token/ERC20/extensions/ERC20Votes.sol";
-import "./token/ERC20/extensions/ERC20FlashMint.sol";
+import "./ERC20.sol";
+import "./ERC20Burnable.sol";
+import "./ERC20Snapshot.sol";
+import "./AccessControl.sol";
+import "./Pausable.sol";
+import "./draft-ERC20Permit.sol";
+import "./ERC20Votes.sol";
+import "./ERC20FlashMint.sol";
 
 // Yummy Ninja DAO Token ($YNDT) Source Code
 
